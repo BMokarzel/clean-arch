@@ -2,7 +2,7 @@
 
 1. Na pasta raiz do projeto, rode o comando "docker compose up -d" para subir o banco de dados e rabbitmq
 
-2. Na pasta raiz do projeto, rode o comando "go run main.go" para iniciar os servidores.
+2. Na pasta cmd\ordersystem\, rode o comando "go run main.go" para iniciar os servidores.
 
 ---- Utilizando os serviços ----
 
