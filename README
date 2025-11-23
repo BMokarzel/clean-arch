@@ -1,0 +1,46 @@
+---- Etapas de inicialização do projeto ----
+
+1. Na pasta raiz do projeto, rode o comando "docker compose up -d" para subir o banco de dados e rabbitmq
+
+2. Na pasta raiz do projeto, rode o comando "go run main.go" para iniciar os servidores.
+
+---- Utilizando os serviços ----
+
+Web:
+    Porta: 8000
+    Endpoints: 
+        [GET] /order
+        [POST] /order
+
+Grpc:
+    Porta: 50051
+    Métodos: 
+        CreateOrder
+        ListOrder
+
+GraphQl:
+    Porta: 8080
+    Schemas:
+        [mutation] CreateOrder
+            "mutation {
+                createOrder(input: {
+                    id: "123456",
+                    Price: 100.5,
+                    Tax: 2.5
+            }) {
+                    id
+                    Price
+                    Tax
+                    FinalPrice
+                }
+            }"
+
+        [query] orders
+            "query {
+                orders {
+                    id
+                    Price
+                    Tax
+                    FinalPrice
+                }
+            }"
