@@ -1,8 +1,10 @@
 ---- Etapas de inicialização do projeto ----
 
-1. Na pasta raiz do projeto, rode o comando "docker compose up -d" para subir o banco de dados e rabbitmq
+1. Na pasta raiz do projeto rode o comando "docker compose up" para subir a aplicação e suas dependências. 
 
-2. Na pasta cmd\ordersystem\, rode o comando "go run main.go" para iniciar os servidores.
+ATENÇÃO:
+
+O rabbitmq pode levar alguns segundos para subir, o que faz com que de inicio a aplicação não consiga subir corretamente. Quando o rabbitmq subir a aplicação irá estabilizar e você poderá seguir com o teste.
 
 ---- Utilizando os serviços ----
 

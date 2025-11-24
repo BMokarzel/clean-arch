@@ -1,6 +1,11 @@
 package configs
 
-import "github.com/spf13/viper"
+import (
+	"fmt"
+	"strings"
+
+	"github.com/spf13/viper"
+)
 
 type conf struct {
 	DBDriver          string `mapstructure:"DB_DRIVER"`
@@ -14,20 +19,33 @@ type conf struct {
 	GraphQLServerPort string `mapstructure:"GRAPHQL_SERVER_PORT"`
 }
 
-func LoadConfig(path string) (*conf, error) {
-	var cfg *conf
-	viper.SetConfigName("app_config")
+func LoadConfig() (*conf, error) {
 	viper.SetConfigType("env")
-	viper.AddConfigPath(path)
-	viper.SetConfigFile(".env")
 	viper.AutomaticEnv()
-	err := viper.ReadInConfig()
-	if err != nil {
-		panic(err)
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+	keys := []string{
+		"DB_DRIVER",
+		"DB_HOST",
+		"DB_PORT",
+		"DB_USER",
+		"DB_PASSWORD",
+		"DB_NAME",
+		"WEB_SERVER_PORT",
+		"GRPC_SERVER_PORT",
+		"GRAPHQL_SERVER_PORT",
 	}
-	err = viper.Unmarshal(&cfg)
-	if err != nil {
-		panic(err)
+
+	for _, k := range keys {
+		viper.SetDefault(k, "")
+		if err := viper.BindEnv(k); err != nil {
+			return nil, fmt.Errorf("bind error for %s: %w", k, err)
+		}
 	}
-	return cfg, err
+
+	var cfg conf
+	if err := viper.Unmarshal(&cfg); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal config: %w", err)
+	}
+
+	return &cfg, nil
 }
